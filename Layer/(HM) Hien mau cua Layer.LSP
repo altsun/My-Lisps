@@ -1,0 +1,10 @@
+;;;************HI ÚN MAﬁ MAÃU CU“A LAYER*************************
+(defun C:HM(/ tm tm1 tm2 e)
+† (if (setq tm (assoc 62 (entget (setq e (car (entsel))))))
+† † (setq tm1 (acad_colordlg (cdr tm)))
+† † (setq tm2 (acad_colordlg (cdr (setq tm (assoc 62 (tblsearch "LAYER" (cdr (assoc 8 (entget e)))))))))
+† )
+† (if (/= tm1 (cdr tm)) (entmod (subst (cons 62 tm1) (assoc 62 (entget e)) (entget e))))
+† (if (and tm2 (/= tm2 (cdr tm))) (entmod (cons (cons 62 tm2) (entget e))))
+† (princ)
+)

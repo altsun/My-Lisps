@@ -1,0 +1,35 @@
+;; free lisp from cadviet.com
+;;; this lisp was downloaded from https://www.cadviet.com/forum/topic/176065-y%C3%AAu-c%C3%A2%CC%80u-lisp-auto-convert-group-to-block/
+
+(defun c:bg (/ block gnames ReplaceString old_str new_str ename strr nbl grname p ss lst_gr ent namegr ptpoint namebl)
+  (defun block (nbl grname p )
+	(vl-cmdf "_.-Block" nbl "_non" p "g" grname "")
+	(vl-cmdf "_.-insert" nbl "non" p "" "" "")
+	(princ))
+   (defun gnames (ename / key dct rtn)
+(setq key (cons 340 ename)
+dct (dictsearch (namedobjdict) "acad_group"))
+(while (setq dct (member (assoc 3 dct) dct))
+(if (member key (entget (cdadr dct)))
+(setq rtn (cons (cdar dct) rtn)))
+(setq dct (cddr dct)))
+(reverse rtn)
+) 
+(defun ReplaceString (old_str new_str strr / m n)
+(setq m 0 n (strlen new_str))
+(while (setq m (vl-string-search old_str strr m))
+(setq strr (vl-string-subst new_str old_str strr m))
+(setq m (+ n m))
+)strr)
+  (setq ss (acet-ss-to-list (ssget)))
+  (setq lst_gr (list))
+  (foreach ent ss
+    (setq namegr (gnames ent))
+    (if (and namegr
+   (not (vl-position (car namegr) lst_gr)) )
+      (setq lst_gr (append lst_gr (list (car namegr )))))    )
+  (foreach ent lst_gr
+    (if (vl-string-search "*" ent) (setq namebl (replacestring "*" "" ent))(setq namebl  ent))
+   (setq ptpoint (cdr (assoc 10 (entget (cdr (assoc 340 (dictsearch (cdr (assoc -1 (dictsearch (namedobjdict) "ACAD_GROUP"))) ent)))))))
+    (block namebl ent ptpoint))
+    )
