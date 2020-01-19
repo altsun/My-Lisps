@@ -87,3 +87,12 @@ nlst (subst nscl oscl elist)
 );if
 (princ)
 );defun
+
+(defun c:SHH ()
+(grtext -1 "Free Lisp From Cadviet @Ketxu")
+(setq Pline (car (entsel "\n Chon doi tuong de chia:"))
+  e (entsel "\nChon doi tuong Hatch can chia:")
+     hObj (car e)
+  pt (cadr e)
+)
+(command ".trim"  Pline "" pt "" "-hatch" pt "" "_MATCHPROP" hObj (entlast) ""))
