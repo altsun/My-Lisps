@@ -1,0 +1,10 @@
+Giai nen file vao dia cung bat ky
+
+1. Doi voi file PTXDIT.dll
+- Mo AutoCAD
+- Lenh "NETLOAD"
+- Tim den file PTXDIT.dll
+- Lenh "BQ" Hoac "batquai" de su dung
+
+
+2. Doi voi file PTXDIT.exe click de su dung
