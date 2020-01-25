@@ -60,7 +60,7 @@
 )
 (defun c:H6 ()  ; Gạch vuông
     (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "-bhatch" "P" "ansi37" "2400" "45" pause)
+    (command "-bhatch" "P" "net" "2400" "0" pause)
 )
 (defun c:H7 ()  ; Chấm
     (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
