@@ -10,27 +10,27 @@
 
 ;;************************LENH TAT CHEN BLOCK
 
-(defun c:ID1 ()
+(defun c:BD1 ()
     (command "_layer" "Set" "HTA - C\U+1EEDa" "")  ; HTA - Cửa
     (command "insert" "CUA DI" pause 1 1 0)  ; Cửa 1, 2, 4 cánh, cửa 30
 )
-(defun c:ID2 ()
+(defun c:BD2 ()
     (command "_layer" "Set" "HTA - C\U+1EEDa" "")
     (command "insert" "D1s_plan" pause 1 1 0)  ; Cửa trượt dọc tường 1 cánh
 )
-(defun c:ID3 ()
+(defun c:BD3 ()
     (command "_layer" "Set" "HTA - C\U+1EEDa" "")
     (command "insert" "D2s_plan" pause 1 1 0)  ; Cửa trượt dọc tường 2 cánh
 )
-(defun c:ID4 ()
+(defun c:BD4 ()
     (command "_layer" "Set" "HTA - C\U+1EEDa" "")
     (command "insert" "D2b_acd" pause 1 1 0)  ; Cửa trượt 1 cánh
 )
-(defun c:ID5 ()
+(defun c:BD5 ()
     (command "_layer" "Set" "HTA - C\U+1EEDa" "")
     (command "insert" "D4b_slide" pause 1 1 0)  ; Cửa trượt 2 cánh
 )
-(defun c:ID6 ()
+(defun c:BD6 ()
     (command "_layer" "Set" "HTA - C\U+1EEDa" "")
     (command "insert" "D4_plan" pause 1 1 0)  ; Cửa 4 cánh gấp
 )
