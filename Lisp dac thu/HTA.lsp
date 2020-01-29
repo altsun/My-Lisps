@@ -40,7 +40,7 @@
 
 (defun c:H1 () ;; Solid
     (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "-bhatch" "P" "solid" "1" "0" pause)
+    (command "-bhatch" "P" "solid" pause)
 )
 (defun c:H2 ()  ; Tường
     (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
