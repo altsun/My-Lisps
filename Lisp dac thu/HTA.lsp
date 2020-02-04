@@ -1,18 +1,19 @@
-;;************************LENH TAT CHON LAYER
+;;************************LỆNH TẮT CHỌN LAYER
 
-(defun c:Q1 () (command "_layer" "Set" "HTA - Li\U+1EC1n \U+0111\U+1EADm 1" ""))  ; HTA - Liền đậm 1
-(defun c:Q2 () (command "_layer" "Set" "HTA - Li\U+1EC1n \U+0111\U+1EADm 2" ""))  ; HTA - Liền đậm 2
-(defun c:Q3 () (command "_layer" "Set" "HTA - Li\U+1EC1n m\U+1EA2nh" ""))  ; HTA - Liền mảnh
-(defun c:Q4 () (command "_layer" "Set" "HTA- Tr\U+1EE5c" ""))  ; HTA- Trục
-(defun c:Q5 () (command "_layer" "Set" "HTA - Ch\U+00DA gi\U+1EA2i" ""))  ; HTA - Chú giải
-(defun c:Q6 () (command "_layer" "Set" "HTA - C\U+1EEDa" ""))  ; HTA - Cửa
-(defun c:Q7 () (command "_layer" "Set" "HTA - N\U+1ED9i th\U+1EA5t" ""))  ; HTA - Nội thất
-(defun c:Q8 () (command "_layer" "Set" "HTA - N.m\U+1EDD" ""))  ; HTA - N.mờ
-(defun c:Q9 () (command "_layer" "Set" "HTA - N.\U+0111\U+1EE9t" ""))  ; HTA - N.đứt
-(defun c:Q0 () (command "_layer" "Set" "Do dien tich" ""))
+(defun c:Q1 () (command "_.layer" "Set" "HTA - Li\U+1EC1n \U+0111\U+1EADm 1" ""))  ; HTA - Liền đậm 1
+(defun c:Q2 () (command "_.layer" "Set" "HTA - Li\U+1EC1n \U+0111\U+1EADm 2" ""))  ; HTA - Liền đậm 2
+(defun c:Q3 () (command "_.layer" "Set" "HTA - Li\U+1EC1n m\U+1EA2nh" ""))  ; HTA - Liền mảnh
+(defun c:Q4 () (command "_.layer" "Set" "HTA- Tr\U+1EE5c" ""))  ; HTA- Trục
+(defun c:Q5 () (command "_.layer" "Set" "HTA - Ch\U+00DA gi\U+1EA2i" ""))  ; HTA - Chú giải
+(defun c:Q6 () (command "_.layer" "Set" "HTA - C\U+1EEDa" ""))  ; HTA - Cửa
+(defun c:Q7 () (command "_.layer" "Set" "HTA - N\U+1ED9i th\U+1EA5t" ""))  ; HTA - Nội thất
+(defun c:Q8 () (command "_.layer" "Set" "HTA - N.m\U+1EDD" ""))  ; HTA - N.mờ
+(defun c:Q9 () (command "_.layer" "Set" "HTA - N.\U+0111\U+1EE9t" ""))  ; HTA - N.đứt
+(defun c:Q0 () (command "_.layer" "Set" "Do dien tich" ""))
 
 
-;;************************LENH TAT CHUYEN LAYER CUA DOI TUONG
+;;************************LỆNH TẮT CHUYỂN LAYER CỦA ĐỐI TƯỢNG
+
 (defun tolayer ( ss lay / i e )
     ;;; Custom function
     ;;; Credit: https://www.cadtutor.net/forum/topic/37328-lisp-to-move-selected-objects-to-a-specified-layer/?tab=comments#comment-304488
@@ -89,7 +90,38 @@
     )
 )
 
-;;************************LENH TAT CHEN BLOCK
+
+;;************************LỆNH TẮT KHI DIM TỰ CHUYỂN LAYER
+
+(defun my_dim (dim_command / *error* current_lay)
+    ;; *error* local redefinition
+    (defun *error* (msg)
+        (if (/= msg "Function cancelled")
+            (princ (strcat "\nError: " msg))
+        )
+        (if current_lay
+            (setvar "CLAYER" current_lay)
+        )
+    )
+    (setq current_lay (getvar "CLAYER"))
+    ;(command "_.layer" "Set" "HTA - Ch\U+00DA gi\U+1EA2i" "")  ; HTA - Chú giải
+    (setvar "CLAYER" "HTA - Ch\U+00DA gi\U+1EA2i")  ; HTA - Chú giải
+    (command dim_command)
+    (while (= 1 (getvar "cmdactive")) (command pause))
+    (setvar "CLAYER" current_lay)
+)
+(defun c:DF ()
+    (my_dim "_.dimaligned")
+)
+(defun c:DG ()
+    (my_dim "_.dimlinear")
+)
+(defun c:DD ()
+    (my_dim "_.dimcontinue")
+)
+
+
+;;************************LỆNH TẮT CHÈN BLOCK
 
 (defun c:BD1 ()
     (command "_layer" "Set" "HTA - C\U+1EEDa" "")  ; HTA - Cửa
@@ -117,7 +149,7 @@
 )
 
 
-;;************************LENH TAT HATCH NHANH
+;;************************LỆNH TẮT HATCH NHANH
 
 (defun c:H1 () ;; Solid
     (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
