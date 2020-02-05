@@ -104,8 +104,8 @@
         )
     )
     (setq current_lay (getvar "CLAYER"))
-    ;(command "_.layer" "Set" "HTA - Ch\U+00DA gi\U+1EA2i" "")  ; HTA - Chú giải
-    (setvar "CLAYER" "HTA - Ch\U+00DA gi\U+1EA2i")  ; HTA - Chú giải
+    (command "_.layer" "Set" "HTA - Ch\U+00DA gi\U+1EA2i" "")  ; HTA - Chú giải
+    ;(setvar "CLAYER" "HTA - Ch\U+00DA gi\U+1EA2i")  ; HTA - Chú giải
     (command dim_command)
     (while (= 1 (getvar "cmdactive")) (command pause))
     (setvar "CLAYER" current_lay)
@@ -124,66 +124,66 @@
 ;;************************LỆNH TẮT CHÈN BLOCK
 
 (defun c:BD1 ()
-    (command "_layer" "Set" "HTA - C\U+1EEDa" "")  ; HTA - Cửa
-    (command "insert" "CUA DI" pause 1 1 0)  ; Cửa 1, 2, 4 cánh, cửa 30
+    (command "_.layer" "Set" "HTA - C\U+1EEDa" "")  ; HTA - Cửa
+    (command "_.insert" "CUA DI" pause 1 1 0)  ; Cửa 1, 2, 4 cánh, cửa 30
 )
 (defun c:BD2 ()
-    (command "_layer" "Set" "HTA - C\U+1EEDa" "")
-    (command "insert" "D1s_plan" pause 1 1 0)  ; Cửa trượt dọc tường 1 cánh
+    (command "_.layer" "Set" "HTA - C\U+1EEDa" "")
+    (command "_.insert" "D1s_plan" pause 1 1 0)  ; Cửa trượt dọc tường 1 cánh
 )
 (defun c:BD3 ()
-    (command "_layer" "Set" "HTA - C\U+1EEDa" "")
-    (command "insert" "D2s_plan" pause 1 1 0)  ; Cửa trượt dọc tường 2 cánh
+    (command "_.layer" "Set" "HTA - C\U+1EEDa" "")
+    (command "_.insert" "D2s_plan" pause 1 1 0)  ; Cửa trượt dọc tường 2 cánh
 )
 (defun c:BD4 ()
-    (command "_layer" "Set" "HTA - C\U+1EEDa" "")
-    (command "insert" "D2b_acd" pause 1 1 0)  ; Cửa trượt 1 cánh
+    (command "_.layer" "Set" "HTA - C\U+1EEDa" "")
+    (command "_.insert" "D2b_acd" pause 1 1 0)  ; Cửa trượt 1 cánh
 )
 (defun c:BD5 ()
-    (command "_layer" "Set" "HTA - C\U+1EEDa" "")
-    (command "insert" "D4b_slide" pause 1 1 0)  ; Cửa trượt 2 cánh
+    (command "_.layer" "Set" "HTA - C\U+1EEDa" "")
+    (command "_.insert" "D4b_slide" pause 1 1 0)  ; Cửa trượt 2 cánh
 )
 (defun c:BD6 ()
-    (command "_layer" "Set" "HTA - C\U+1EEDa" "")
-    (command "insert" "D4_plan" pause 1 1 0)  ; Cửa 4 cánh gấp
+    (command "_.layer" "Set" "HTA - C\U+1EEDa" "")
+    (command "_.insert" "D4_plan" pause 1 1 0)  ; Cửa 4 cánh gấp
 )
 
 
 ;;************************LỆNH TẮT HATCH NHANH
 
 (defun c:H1 () ;; Solid
-    (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "-bhatch" "P" "solid" pause)
+    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
+    (command "_.bhatch" "P" "solid" pause)
 )
 (defun c:H2 ()  ; Tường
-    (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "-bhatch" "P" "ansi31" "350" "0" pause)
+    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
+    (command "_.bhatch" "P" "ansi31" "350" "0" pause)
 )
 (defun c:H3 ()  ; Bê tông
-    (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "-bhatch" "P" "ar-conc" "20" "0" pause)
+    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
+    (command "_.bhatch" "P" "ar-conc" "20" "0" pause)
 )
 (defun c:H33 ()  ; Bê tông cốt thép (dùng custom hatch)
-    (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "-bhatch" "P" "1-btct" "20" "0" pause)
+    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
+    (command "_.bhatch" "P" "1-btct" "20" "0" pause)
 )
 (defun c:H4 ()  ; Gỗ
-    (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "-bhatch" "P" "gost_wood" "10" "45" pause)
+    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
+    (command "_.bhatch" "P" "gost_wood" "10" "45" pause)
 )
 (defun c:H5 ()  ; Kính
-    (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "-bhatch" "P" "ar-rroof" "200" "45" pause)
+    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
+    (command "_.bhatch" "P" "ar-rroof" "200" "45" pause)
 )
 (defun c:H6 ()  ; Gạch vuông
-    (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "-bhatch" "P" "net" "2400" "0" pause)
+    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
+    (command "_.bhatch" "P" "net" "2400" "0" pause)
 )
 (defun c:H7 ()  ; Chấm
-    (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "-bhatch" "P" "ar-sand" "70" "0" pause)
+    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
+    (command "_.bhatch" "P" "ar-sand" "70" "0" pause)
 )
 (defun c:H8 ()  ; Ngói
-    (command "_layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "-bhatch" "P" "ar-rshke" "20" "0" pause)
+    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
+    (command "_.bhatch" "P" "ar-rshke" "20" "0" pause)
 )
