@@ -9,6 +9,7 @@
 (defun c:Q7 () (command "_.layer" "Set" "HTA - N\U+1ED9i th\U+1EA5t" ""))  ; HTA - Nội thất
 (defun c:Q8 () (command "_.layer" "Set" "HTA - N.m\U+1EDD" ""))  ; HTA - N.mờ
 (defun c:Q9 () (command "_.layer" "Set" "HTA - N.\U+0111\U+1EE9t" ""))  ; HTA - N.đứt
+(defun c:Q` () (command "_.layer" "Set" "HTA - Ket cau" ""))  ; HTA - Ket cau
 (defun c:Q0 () (command "_.layer" "Set" "Do dien tich" ""))
 
 
@@ -83,6 +84,12 @@
         "HTA - N.\U+0111\U+1EE9t"  ; HTA - N.đứt
     )
 )
+(defun c:QQ` ()
+    (tolayer
+        (ssget "_:L")  ; selection
+        "HTA - Ket cau"  ; HTA - Ket cau
+    )
+)
 (defun c:QQ0 ()
     (tolayer
         (ssget "_:L")  ; selection
@@ -104,8 +111,13 @@
         )
     )
     (setq current_lay (getvar "CLAYER"))
-    (command "_.layer" "Set" "HTA - Ch\U+00DA gi\U+1EA2i" "")  ; HTA - Chú giải
-    ;(setvar "CLAYER" "HTA - Ch\U+00DA gi\U+1EA2i")  ; HTA - Chú giải
+    ; Check if layer HTA - Chú giải is on
+    (if (not (<
+            (cdr (assoc 62 (entget (tblobjname "layer" "HTA - Ch\U+00DA gi\U+1EA2i"))))  ; HTA - Chú giải
+            0
+        ))
+        (setvar "CLAYER" "HTA - Ch\U+00DA gi\U+1EA2i")  ; HTA - Chú giải
+    )
     (command dim_command)
     (while (= 1 (getvar "cmdactive")) (command pause))
     (setvar "CLAYER" current_lay)
