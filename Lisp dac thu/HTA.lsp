@@ -111,11 +111,16 @@
         )
     )
     (setq current_lay (getvar "CLAYER"))
-    ; Check if layer HTA - Chú giải is on
-    (if (not (<
-            (cdr (assoc 62 (entget (tblobjname "layer" "HTA - Ch\U+00DA gi\U+1EA2i"))))  ; HTA - Chú giải
-            0
-        ))
+    ; Check if layer HTA - Chú giải exists and is on
+    (if (and
+            ; Check if layer HTA - Chú giải exists
+            (tblsearch "layer" "HTA - Ch\U+00DA gi\U+1EA2i")  ; HTA - Chú giải
+            ; Check if layer HTA - Chú giải is on
+            (not (<
+                (cdr (assoc 62 (entget (tblobjname "layer" "HTA - Ch\U+00DA gi\U+1EA2i"))))  ; HTA - Chú giải
+                0
+            ))
+        )
         (setvar "CLAYER" "HTA - Ch\U+00DA gi\U+1EA2i")  ; HTA - Chú giải
     )
     (command dim_command)
