@@ -3,7 +3,7 @@
 
 (defun c:wd ( / p1 p2 x1 y1 x2 y2 x_mid y_mid)
 	(setq p1 (getpoint "Enter the point 1"))
-	(setq p2 (getpoint "Enter the point 2"))
+	(setq p2 (getpoint p1 "Enter the point 2"))
 	(command "_rectangle" p1 p2)
 
 	(setq x1 (car p1))
