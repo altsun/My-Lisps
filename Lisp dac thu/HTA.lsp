@@ -100,6 +100,13 @@
     )
 )
 
+(defun c:00 ()
+    (tolayer
+        (ssget "_:L")  ; selection
+        "0"  ; 0
+    )
+)
+
 (defun c:EE1 ()
     (tolayer
         (ssget "_:L")  ; selection
