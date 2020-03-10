@@ -70,6 +70,10 @@
 ;;  - Fixed a bug which resulted in an incorrect output when processing ;;
 ;;    MText whose text content occupied multiple DXF group 3 entries.   ;;
 ;;----------------------------------------------------------------------;;
+;;  Version 1.8    -    2020-03-07                                      ;;
+;;                                                                      ;;
+;;  - Program modified to incorporate support for table cell content.   ;;
+;;----------------------------------------------------------------------;;
 
 (defun c:ctx nil (copyswaptext:main nil))
 (defun c:stx nil (copyswaptext:main   t))
@@ -149,6 +153,7 @@
             )
         )
     )
+    
     (*error* nil)
     (princ)
 )
@@ -195,7 +200,7 @@
                     )
                 )
                 (   (= 4 (logand 4 (cdr (assoc 70 (tblsearch "layer" (cdr (assoc 8 (entget (car sel)))))))))
-                    (princ "\nSelected object is on a locked layer.")
+                    (princ "\nThe selected object is on a locked layer.")
                 )
                 (   (null (setq rtn (copyswaptext:gettextcontent sel))))
             )
@@ -217,6 +222,12 @@
         )
         (   (wcmatch typ "*DIMENSION")
             (vla-put-textoverride obj str)
+        )
+        (   (= "ACAD_TABLE" typ)
+            (if (zerop (logand accellstatecontentlocked (vla-getcellstate obj (caddr lst) (cadddr lst))))
+                (vla-settext obj (caddr lst) (cadddr lst) str)
+                (princ "\nThe table cell content is locked.")
+            )
         )
         (   (and (= "INSERT" typ)
                  (= 1 (cdr (assoc 66 enx)))
@@ -255,8 +266,13 @@
 
 ;;----------------------------------------------------------------------;;
 
-(defun copyswaptext:gettextcontent ( sel / con ent enx tmp typ )
-    (if (and (= 4 (length sel)) (wcmatch (cdr (assoc 0 (entget (car (last sel))))) "*DIMENSION"))
+(defun copyswaptext:gettextcontent ( sel / con ent enx obj tmp typ )
+    (if
+        (and
+            (= 4 (length sel))
+            (= "MTEXT" (cdr (assoc 0 (entget (car sel)))))
+            (wcmatch (cdr (assoc 0 (entget (car (last sel))))) "ACAD_TABLE,*DIMENSION")
+        )
         (setq ent (car (last sel)))
         (setq ent (car sel))
     )
@@ -264,6 +280,20 @@
           typ (cdr (assoc 0 enx))
     )
     (cond
+        (   (= "ACAD_TABLE" typ)
+            (if
+                (= :vlax-true
+                    (vla-hittest
+                        (setq obj (vlax-ename->vla-object ent))
+                        (vlax-3D-point (trans (cadr sel) 1 0))
+                        (vlax-3D-point (trans (getvar 'viewdir) 1 0))
+                        'row
+                        'col
+                    )
+                )
+                (list ent (vla-gettext obj row col) row col)
+            )
+        )
         (   (= "TEXT" typ)
             (list ent (cdr (assoc 1 enx)))
         )
@@ -489,7 +519,7 @@
 ;;----------------------------------------------------------------------;;
 
 (defun copyswaptext:allowsformatting ( enx )
-    (or (wcmatch (cdr (assoc 0 enx)) "MTEXT,MULTILEADER,*DIMENSION")
+    (or (wcmatch (cdr (assoc 0 enx)) "ACAD_TABLE,MTEXT,MULTILEADER,*DIMENSION")
         (and (= "ATTRIB" (cdr (assoc 0 enx)))
              (member '(101 . "Embedded Object") enx)
         )
@@ -607,8 +637,8 @@
 (vl-load-com)
 (princ
     (strcat
-        "\n:: CopySwapText.lsp | Version 1.7 | \\U+00A9 Lee Mac "
-        (menucmd "m=$(edtime,0,yyyy)")
+        "\n:: CopySwapText.lsp | Version 1.8 | \\U+00A9 Lee Mac "
+        ((lambda ( y ) (if (= y (menucmd "m=$(edtime,0,yyyy)")) y (strcat y "-" (menucmd "m=$(edtime,0,yyyy)")))) "2010")
         " www.lee-mac.com ::"
         "\n:: \"ctx\" to Copy | \"stx\" to Swap ::"
     )
