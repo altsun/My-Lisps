@@ -309,13 +309,17 @@
 
 ;;************************LỆNH TẮT HATCH NHANH
 
-(defun c:H1 () ;; Solid
+(defun c:H1 () ; Solid
     (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
     (command "_.bhatch" "P" "solid" pause)
 )
 (defun c:H2 ()  ; Tường
     (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
     (command "_.bhatch" "P" "ansi31" "350" "0" pause)
+)
+(defun c:H22 ()  ; Tôn, lan can
+    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
+    (command "_.bhatch" "P" "ansi32" "1000" "135" pause)
 )
 (defun c:H3 ()  ; Bê tông
     (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
@@ -327,19 +331,19 @@
 )
 (defun c:H4 ()  ; Gỗ
     (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "_.bhatch" "P" "gost_wood" "10" "45" pause)
+    (command "_.bhatch" "P" "ansi36" "100" "0" pause)  ; Dùng ansi36 vì AutoCAD 2007 không có gost_wood
 )
 (defun c:H5 ()  ; Kính
     (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
     (command "_.bhatch" "P" "ar-rroof" "200" "45" pause)
 )
-(defun c:H6 ()  ; Gạch vuông
+(defun c:H6 ()  ; Gạch vuông (giá trị khởi tạo 300x300)
     (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
     (command "_.bhatch" "P" "net" "2400" "0" pause)
 )
 (defun c:H7 ()  ; Chấm
     (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "_.bhatch" "P" "ar-sand" "70" "0" pause)
+    (command "_.bhatch" "P" "ar-sand" "150" "0" pause)
 )
 (defun c:H8 ()  ; Ngói
     (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
