@@ -309,45 +309,52 @@
 
 ;;************************LỆNH TẮT HATCH NHANH
 
-(defun c:H1 () ; Solid
+(defun hatch_nhanh (htype hscale hangle)
+    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
+    (command "_.bhatch" "P" htype hscale hangle pause)
+)
+(defun c:H0 ()  ; Đất
+    (hatch_nhanh "hound" "1500" "0")
+)
+(defun c:H1 () ; Solid, kiểu hatch đặc biệt không dùng được hàm hatch_nhanh (do không có hscale)
     (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
     (command "_.bhatch" "P" "solid" pause)
 )
 (defun c:H2 ()  ; Tường
-    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "_.bhatch" "P" "ansi31" "350" "0" pause)
+    (hatch_nhanh "ansi31" "350" "0")
 )
-(defun c:H22 ()  ; Tôn, lan can
-    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "_.bhatch" "P" "ansi32" "1000" "135" pause)
+(defun c:H22 ()  ; Mái tôn, lan can
+    (hatch_nhanh "ansi32" "1000" "135")
 )
-(defun c:H3 ()  ; Bê tông
-    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "_.bhatch" "P" "ar-conc" "20" "0" pause)
+(defun c:H3 ()  ; Bê tông, đá
+    (hatch_nhanh "ar-conc" "20" "0")
 )
 (defun c:H33 ()  ; Bê tông cốt thép (dùng custom hatch)
-    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "_.bhatch" "P" "1-btct" "20" "0" pause)
+    (hatch_nhanh "1-btct" "20" "0")
+)
+(defun c:H333 ()  ; Đá ốp
+    (hatch_nhanh "gravel" "300" "0")
 )
 (defun c:H4 ()  ; Gỗ
-    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "_.bhatch" "P" "ansi36" "100" "0" pause)  ; Dùng ansi36 vì AutoCAD 2007 không có gost_wood
+    (hatch_nhanh "ansi36" "100" "0")  ; Dùng ansi36 vì AutoCAD 2007 không có gost_wood
+)
+(defun c:H44 ()  ; Sàn gỗ
+    (hatch_nhanh "dolmit" "350" "0")
 )
 (defun c:H5 ()  ; Kính
-    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "_.bhatch" "P" "ar-rroof" "200" "45" pause)
+    (hatch_nhanh "ar-rroof" "200" "45")
 )
 (defun c:H6 ()  ; Gạch vuông (giá trị khởi tạo 300x300)
-    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "_.bhatch" "P" "net" "2400" "0" pause)
+    (hatch_nhanh "net" "2400" "0")
 )
 (defun c:H7 ()  ; Chấm
-    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "_.bhatch" "P" "ar-sand" "150" "0" pause)
+    (hatch_nhanh "ar-sand" "150" "0")
 )
 (defun c:H8 ()  ; Ngói
-    (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
-    (command "_.bhatch" "P" "ar-rshke" "20" "0" pause)
+    (hatch_nhanh "ar-rshke" "20" "0")
+)
+(defun c:H9 ()  ; Gạch ốp (giá trị khởi tạo 220x110)
+    (hatch_nhanh "brick" "440" "0")
 )
 
 
@@ -378,4 +385,134 @@
     )
     (command "_.qleader" pause pause pause \e)  ; \e simulate escape key
     (setvar "CLAYER" current_lay)
+)
+
+
+;;************************LỆNH TẮT XỬ LÝ GIAO GIỮA DÂY ĐIỆN VÀ THIẾT BỊ ĐIỆN (CHƯA XONG)
+
+;; Intersections  -  Lee Mac
+;; Returns a list of all points of intersection between two objects
+;; for the given intersection mode.
+;; ob1,ob2 - [vla] VLA-Objects
+;;     mod - [int] acextendoption enum of intersectwith method
+
+(defun LM:intersections ( ob1 ob2 mod / lst rtn )
+    (if (and (vlax-method-applicable-p ob1 'intersectwith)
+             (vlax-method-applicable-p ob2 'intersectwith)
+             (setq lst (vlax-invoke ob1 'intersectwith ob2 mod))
+        )
+        (repeat (/ (length lst) 3)
+            (setq rtn (cons (list (car lst) (cadr lst) (caddr lst)) rtn)
+                  lst (cdddr lst)
+            )
+        )
+    )
+    (reverse rtn)
+)
+
+;;; =====================================================
+;;;    c:pl_perp2segment.lsp  By CAB 07/21/04            
+;;;
+;;;    Draw a line perpendicular to a polyline segment
+;;;    picked by the user from a point picked
+;;;    Will draw to extension of segment if point is not
+;;;    perpendicular to segment
+;;;
+;;;    Uses current layer
+;;;
+;;;    Also works with Arc, Circle & Line but the segment
+;;;    created is to the chord in Arcs & Circles
+;;; =====================================================
+(defun c:pl_perp2segment ()
+  (if (and (setq ent (entsel "Pick a polyline: "))
+           (member (cdr (assoc 0 (entget (car ent))))
+                   '("LWPOLYLINE" "ARC" "CIRCLE" "LINE"))
+           )
+    (if (setq pt (getpoint "\nSelect point."))
+      (progn
+         (setq plst (getsegment
+                      (vlax-ename->vla-object (car ent))
+                      (cadr ent)
+                    )
+         )
+         (setq ppl (ge_perppt pt (cadr plst) (caddr plst)))
+         (command "._pline" "non" ppl "non" pt "")
+         (command "._circle" ppl 100)  ; Create a circle with radius 100
+         (command "._pline" "non" p1 "non" pt "non" p2 "")
+        )
+      (prompt "\n *-* User quit *-*")
+      );endif
+      (prompt "\n *-* Invalid object selected *-*")
+  ); endif
+  (princ)
+); defun
+
+(defun getsegment (obj pt / cpt eparam stparam)
+  (cond
+    ((setq cpt (vlax-curve-getclosestpointto obj pt t))
+     (setq eparam (fix (vlax-curve-getendparam obj)))
+     (if (= eparam (setq stparam (fix (vlax-curve-getparamatpoint obj cpt))))
+       (setq stparam (1- stparam))
+       (setq eparam (1+ stparam))
+     )
+     (list eparam
+           (vlax-curve-getpointatparam obj stparam)
+           (vlax-curve-getpointatparam obj eparam)
+     )
+    )
+  )
+)
+
+;; ! ****************************************************************************
+;; ! GE_PerpPt
+;; ! ****************************************************************************
+;; ! Function : Locate the perpendicular drop point from a point pp to any line
+;; !            segment defined by two other points pt1 and pt2
+;; ! Argument : [pp] - Point to drop from
+;; !            [p1] - First Point of line segment
+;; !            [p2] - Second Point of line segment
+;; ! Return   : The drop point on the line segment
+;; ! (C) 1999-2004, Four Dimension Technologies, Bangalore
+;; ! e-mail   : rakesh.rao@4d-technologies.com
+;; ! Web      : www.4d-technologies.com
+;; ! ****************************************************************************
+(defun ge_perppt (pp p1 p2 / x y x1 x2 x3 x4 y1 y2 y3 y4 m p4)
+  (setq
+    x  (car pp)
+    y  (cadr pp)
+    x1 (car p1)
+    y1 (cadr p1)
+    x2 (car p2)
+    y2 (cadr p2)
+  )
+
+  (cond
+    ((equal x1 x2 0.0000001) ; Vertical line
+     (setq
+       x4 x1
+       y4 y
+       p4 (list x4 y4 0.0)
+     )
+    )
+    ((equal y1 y2 0.0000001) ; Horizontal line
+     (setq
+       x4 x
+       y4 y1
+       p4 (list x4 y4 0.0)
+     )
+    )
+    (t
+     (setq
+       m  (/ (- y2 y1) (- x2 x1)) ; gradient p1- p2
+       x4 (/ (+ (/ x m) (+ y (- (* m x1) y1))) (+ (/ 1 m) m))
+       y4 (+ y1 (* m (- x4 x1)))
+       p4 (list x4 y4 0.0)
+     )
+    )
+  )
+  p4
+)
+
+(defun c:1E()
+  (c:pl_perp2segment)
 )
