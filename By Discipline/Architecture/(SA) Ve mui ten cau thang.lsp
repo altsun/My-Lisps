@@ -18,10 +18,10 @@
 			(setq x3 (car p3))
 			(setq y3 (cadr p3))
 			; Distance between 2 last points
-			(setq distance (sqrt (+ (* (- x1 x3) (- x1 x3)) (* (- y1 y3) (- y1 y3))) ) )
+			(setq dist (sqrt (+ (* (- x1 x3) (- x1 x3)) (* (- y1 y3) (- y1 y3))) ) )
 			; Determine point between 2 last points and 300 unit distance from last point
-			(setq x4 (+ x1 (* (/ 300 distance) (- x3 x1))))
-			(setq y4 (+ y1 (* (/ 300 distance) (- y3 y1))))
+			(setq x4 (+ x1 (* (/ 300 dist) (- x3 x1))))
+			(setq y4 (+ y1 (* (/ 300 dist) (- y3 y1))))
 			; Draw line between that point and last point
 			(command ".line" (list x1 y1)  (list x4 y4) "")
 			; Rotate that line and mirror it
