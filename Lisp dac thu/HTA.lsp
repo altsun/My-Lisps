@@ -404,7 +404,7 @@
 (defun c:DS10 () (command "_.dim" "dimstyle" "restore" "HTA 1-100" "exit") )
 
 
-;;************************LỆNH TẮT CHUYỂN TỶ LỆ DIM THEO KHUNG TÊN (TODO)
+;;************************LỆNH TẮT CHUYỂN TỶ LỆ DIM THEO KHUNG TÊN
 (defun c:CDS( / ss ent entdata scale)
     (setq ss (ssget))
     (setq ent (ssname ss 0))  ; Get first entity of selection set
