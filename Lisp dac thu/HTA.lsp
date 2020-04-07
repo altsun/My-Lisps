@@ -405,6 +405,7 @@
 
 
 ;;************************LỆNH TẮT CHUYỂN TỶ LỆ DIM THEO KHUNG TÊN
+
 (defun c:CDS( / ss ent entdata scale)
     (setq ss (ssget))
     (setq ent (ssname ss 0))  ; Get first entity of selection set
