@@ -347,6 +347,9 @@
 (defun c:H6 ()  ; Gạch vuông (giá trị khởi tạo 300x300)
     (hatch_nhanh "net" "2400" "0")
 )
+(defun c:H66 ()  ; Gạch vuông sơ bộ
+    (hatch_nhanh "angle" "1200" "0")
+)
 (defun c:H7 ()  ; Chấm
     (hatch_nhanh "ar-sand" "150" "0")
 )
@@ -402,8 +405,47 @@
 
 
 ;;************************LỆNH TẮT CHUYỂN TỶ LỆ DIM THEO KHUNG TÊN (TODO)
-(defun c:CTD ()
-    
+(defun c:CDS( / ss ent entdata scale)
+    (setq ss (ssget))
+    (setq ent (ssname ss 0))  ; Get first entity of selection set
+    (setq entdata (entget ent))  ; Get entity's data
+    (if (and (= (cdr(assoc 0 entdata)) "INSERT")  ; If entity is block
+        (= (cdr(assoc 2 entdata)) "khung ten")  ; and it's name is "khung ten"
+    )
+        (progn
+            (setq scale (cdr(assoc 41 entdata)))  ; Get block scale
+            (cond
+                ; To compare float, use equal function
+                ((equal scale 0.2 1e-6)
+                    (command "_.dim" "dimstyle" "restore" "HTA 1-20" "exit")
+                )
+                ((equal scale 0.3 1e-6)
+                    (command "_.dim" "dimstyle" "restore" "HTA 1-30" "exit")
+                )
+                ((equal scale 0.4 1e-6)
+                    (command "_.dim" "dimstyle" "restore" "HTA 1-40" "exit")
+                )
+                ((equal scale 0.5 1e-6)
+                    (command "_.dim" "dimstyle" "restore" "HTA 1-50" "exit")
+                )
+                ((equal scale 0.6 1e-6)
+                    (command "_.dim" "dimstyle" "restore" "HTA 1-60" "exit")
+                )
+                ((equal scale 0.7 1e-6)
+                    (command "_.dim" "dimstyle" "restore" "HTA 1-70" "exit")
+                )
+                ((equal scale 0.8 1e-6)
+                    (command "_.dim" "dimstyle" "restore" "HTA 1-80" "exit")
+                )
+                ((equal scale 0.9 1e-6)
+                    (command "_.dim" "dimstyle" "restore" "HTA 1-90" "exit")
+                )
+                ((equal scale 1.0 1e-6)
+                    (command "_.dim" "dimstyle" "restore" "HTA 1-100" "exit")
+                )
+            )
+        )
+    )
 )
 
 
