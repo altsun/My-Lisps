@@ -309,7 +309,7 @@
 
 ;;************************LỆNH TẮT HATCH NHANH
 
-(defun hatch_nhanh (htype hscale hangle)
+(defun hatch_nhanh (htype hscale hangle / )
     (command "_.layer" "Set" "HTA - V\U+1EADt li\U+1EC7u 1" "")  ; HTA- Vật liệu 1
     (command "_.bhatch" "P" htype hscale hangle pause)
 )
@@ -336,7 +336,7 @@
     (hatch_nhanh "gravel" "300" "0")
 )
 (defun c:H4 ()  ; Gỗ
-    (hatch_nhanh "ansi36" "100" "0")  ; Dùng ansi36 vì AutoCAD 2007 không có gost_wood
+    (hatch_nhanh "ansi36" "200" "0")  ; Dùng ansi36 vì AutoCAD 2007 không có gost_wood
 )
 (defun c:H44 ()  ; Sàn gỗ
     (hatch_nhanh "dolmit" "350" "0")
@@ -388,7 +388,26 @@
 )
 
 
-;;************************LỆNH TẮT XỬ LÝ GIAO GIỮA DÂY ĐIỆN VÀ THIẾT BỊ ĐIỆN (CHƯA XONG)
+;;************************LỆNH TẮT CHUYỂN TỶ LỆ DIM
+
+(defun c:DS2 () (command "_.dim" "dimstyle" "restore" "HTA 1-20" "exit") )
+(defun c:DS3 () (command "_.dim" "dimstyle" "restore" "HTA 1-30" "exit") )
+(defun c:DS4 () (command "_.dim" "dimstyle" "restore" "HTA 1-40" "exit") )
+(defun c:DS5 () (command "_.dim" "dimstyle" "restore" "HTA 1-50" "exit") )
+(defun c:DS6 () (command "_.dim" "dimstyle" "restore" "HTA 1-60" "exit") )
+(defun c:DS7 () (command "_.dim" "dimstyle" "restore" "HTA 1-70" "exit") )
+(defun c:DS8 () (command "_.dim" "dimstyle" "restore" "HTA 1-80" "exit") )
+(defun c:DS9 () (command "_.dim" "dimstyle" "restore" "HTA 1-90" "exit") )
+(defun c:DS10 () (command "_.dim" "dimstyle" "restore" "HTA 1-100" "exit") )
+
+
+;;************************LỆNH TẮT CHUYỂN TỶ LỆ DIM THEO KHUNG TÊN (TODO)
+(defun c:CTD ()
+    
+)
+
+
+;;************************LỆNH TẮT XỬ LÝ GIAO GIỮA DÂY ĐIỆN VÀ THIẾT BỊ ĐIỆN (TODO)
 
 ;; Intersections  -  Lee Mac
 ;; Returns a list of all points of intersection between two objects
