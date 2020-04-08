@@ -450,63 +450,31 @@
 )
 
 
-;;************************LỆNH TẮT XỬ LÝ GIAO GIỮA DÂY ĐIỆN VÀ THIẾT BỊ ĐIỆN (TODO)
+;;************************LỆNH TẮT XỬ LÝ GIAO GIỮA DÂY ĐIỆN VÀ THIẾT BỊ ĐIỆN
 
-;; Intersections  -  Lee Mac
-;; Returns a list of all points of intersection between two objects
-;; for the given intersection mode.
-;; ob1,ob2 - [vla] VLA-Objects
-;;     mod - [int] acextendoption enum of intersectwith method
-
-(defun LM:intersections ( ob1 ob2 mod / lst rtn )
-    (if (and (vlax-method-applicable-p ob1 'intersectwith)
-             (vlax-method-applicable-p ob2 'intersectwith)
-             (setq lst (vlax-invoke ob1 'intersectwith ob2 mod))
+(defun c:CEW ( / ent pt plst ppl p1 p2)
+    (if (and (setq ent (entsel "Pick a polyline: "))
+            (member (cdr (assoc 0 (entget (car ent))))
+                    '("LWPOLYLINE" "ARC" "CIRCLE" "LINE"))
         )
-        (repeat (/ (length lst) 3)
-            (setq rtn (cons (list (car lst) (cadr lst) (caddr lst)) rtn)
-                  lst (cdddr lst)
+        (if (setq pt (getpoint "\nSelect point."))
+            (progn
+                (setq plst (getsegment
+                            (vlax-ename->vla-object (car ent))
+                            (cadr ent)
+                            )
+                )
+                (setq ppl (ge_perppt pt (cadr plst) (caddr plst)))
+                (setq p1 (polar ppl (+ (angle ppl pt) (/ pi 2)) 100))
+                (setq p2 (polar ppl (- (angle ppl pt) (/ pi 2)) 100))
+                (command "._pline" pt p1 "")
+                (command "._pline" pt p2 "")
             )
-        )
-    )
-    (reverse rtn)
-)
-
-;;; =====================================================
-;;;    c:pl_perp2segment.lsp  By CAB 07/21/04            
-;;;
-;;;    Draw a line perpendicular to a polyline segment
-;;;    picked by the user from a point picked
-;;;    Will draw to extension of segment if point is not
-;;;    perpendicular to segment
-;;;
-;;;    Uses current layer
-;;;
-;;;    Also works with Arc, Circle & Line but the segment
-;;;    created is to the chord in Arcs & Circles
-;;; =====================================================
-(defun c:pl_perp2segment ()
-  (if (and (setq ent (entsel "Pick a polyline: "))
-           (member (cdr (assoc 0 (entget (car ent))))
-                   '("LWPOLYLINE" "ARC" "CIRCLE" "LINE"))
-           )
-    (if (setq pt (getpoint "\nSelect point."))
-      (progn
-         (setq plst (getsegment
-                      (vlax-ename->vla-object (car ent))
-                      (cadr ent)
-                    )
-         )
-         (setq ppl (ge_perppt pt (cadr plst) (caddr plst)))
-         (command "._pline" "non" ppl "non" pt "")
-         (command "._circle" ppl 100)  ; Create a circle with radius 100
-         (command "._pline" "non" p1 "non" pt "non" p2 "")
-        )
-      (prompt "\n *-* User quit *-*")
-      );endif
-      (prompt "\n *-* Invalid object selected *-*")
-  ); endif
-  (princ)
+            (prompt "\n *-* User quit *-*")
+        );endif
+        (prompt "\n *-* Invalid object selected *-*")
+    ); endif
+    (princ)
 ); defun
 
 (defun getsegment (obj pt / cpt eparam stparam)
@@ -573,8 +541,4 @@
     )
   )
   p4
-)
-
-(defun c:1E()
-  (c:pl_perp2segment)
 )
