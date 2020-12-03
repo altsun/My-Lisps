@@ -77,6 +77,11 @@
 ;;    residing on frozen layers.                                        ;;
 ;;  - Added option to specify block name at command-line.               ;;
 ;;----------------------------------------------------------------------;;
+;;  Version 1.9    -    2020-11-14                                      ;;
+;;                                                                      ;;
+;;  - Revised calculation of block rotation angle to account for        ;;
+;;    insertion points located at the end points of the supplied curve. ;;
+;;----------------------------------------------------------------------;;
 
 (defun c:abb ( / *error* blk obj ins sel tmp )
 
@@ -366,7 +371,8 @@
         )
         (progn
             (if
-                (and rot
+                (and
+                    rot
                     (setq bbx (LM:blockboundingbox (vlax-ename->vla-object ent)))
                     (setq sel
                         (ssget "_C"
@@ -390,25 +396,24 @@
                         )
                         (< di1 1e-4)
                     )
-                )
-                (progn
-                    (setq ang
-                        (angle '(0.0 0.0 0.0)
-                            (trans
-                                (vlax-curve-getfirstderiv crv
-                                    (vlax-curve-getparamatpoint crv
-                                        (vlax-curve-getclosestpointto crv ins)
-                                    )
-                                )
-                                0 (cdr (assoc 210 (entget crv)))
-                            )
+                    (setq par (vlax-curve-getparamatpoint crv (vlax-curve-getclosestpointto crv ins)))
+                    (cond
+                        (   (equal par (vlax-curve-getendparam crv) 1e-8)
+                            (setq  par (vlax-curve-getparamatdist crv (- (vlax-curve-getdistatparam crv par) 1e-3)))
                         )
+                        (   (equal par (vlax-curve-getstartparam crv) 1e-8)
+                            (setq  par (vlax-curve-getparamatdist crv (+ (vlax-curve-getdistatparam crv par) 1e-3)))
+                        )
+                        (   t   )
                     )
-                    (if (and (< (/ pi 2.0) ang) (<= ang (/ (* 3.0 pi) 2.0)))
+                    (setq der (vlax-curve-getfirstderiv crv par))
+                    (setq ang (angle '(0.0 0.0 0.0) (trans der 0 (cdr (assoc 210 (entget crv))))))
+                    (or (<= ang (/ pi 2.0))
+                        (< (/ (* 3.0 pi) 2.0) ang)
                         (setq ang (+ ang pi))
                     )
-                    (vla-put-rotation (vlax-ename->vla-object ent) ang) ;; VL used to account for attributes
                 )
+                (vla-put-rotation (vlax-ename->vla-object ent) ang) ;; VL used to account for attributes
             )
             (if
                 (and
@@ -667,8 +672,8 @@
 (vl-load-com)
 (princ
     (strcat
-        "\n:: AutoBlockBreak.lsp | Version 1.8 | \\U+00A9 Lee Mac "
-        (menucmd "m=$(edtime,0,yyyy)")
+        "\n:: AutoBlockBreak.lsp | Version 1.9 | \\U+00A9 Lee Mac "
+        ((lambda ( y ) (if (= y (menucmd "m=$(edtime,0,yyyy)")) y (strcat y "-" (menucmd "m=$(edtime,0,yyyy)")))) "2010")
         " www.lee-mac.com ::"
         "\n:: \"ABB\" - Insert & Break | \"ABBE\"/\"ABBS\" - Break Existing ::"
     )
