@@ -1,3 +1,5 @@
+; Last update: 2021/01/07
+
 (vl-load-com)
 
 ;;************************CLEAN CAD DRAWING
@@ -45,5 +47,5 @@
 	(setvar "osmode" c_osmode)
 
     ; End function
-    (princ)
+    (princ "BOCLEAN Done!")
 )
