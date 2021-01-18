@@ -1,6 +1,14 @@
-; Last update: 2021/01/07
+; Last update: 2021/01/18
 
 (vl-load-com)
+
+(defun ceil (x / n)
+	(if (or (= (setq n (fix x)) x) (< x 0))
+		n
+		(1+ n)
+	)
+)
+
 
 ;;************************CLEAN CAD DRAWING
 (defun c:BOCLEAN ( / *error* origin does_scale sset)
@@ -48,4 +56,29 @@
 
     ; End function
     (princ "BOCLEAN Done!")
+)
+
+
+;;************************CALCULATE CONNECTIONS OF CONNECTOR FOR FLOOR HEATING AND CLIMATE CEILING (BY SELECTING POLYLINES)
+(defun c:SCNT ( / pl sum_area sum_area_m2 num_connection result)
+    (if (setq pl (ssget '((0 . "*polyline"))))
+        (progn
+            (setq sum_area 0)
+            (repeat (setq i (sslength pl))
+                (setq sum_area
+                    (+ (vla-get-area
+                        (vlax-ename->vla-object (ssname pl (setq i (1- i))))
+                        )
+                    sum_area
+                    )
+                )
+            )
+            (setq sum_area_m2 (/ sum_area 1000000))
+            (setq num_connection (ceil (/ sum_area_m2 12)))  ; Divide area (m2) by 12 then round up to nearest integer
+            (setq result (strcat "\nZone Areas: " (rtos sum_area_m2 2 1) " m2" "\nNumber of Connections: " (rtos num_connection 2 0)))
+            (alert result)
+            (prompt result)
+        )
+    )
+    (princ)
 )
