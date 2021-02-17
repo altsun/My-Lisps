@@ -1,7 +1,8 @@
-; Last update: 2021/01/18
+; Last update: 2021/02/17
 
 (vl-load-com)
 
+;;************************HELPER FUNCTIONS
 (defun ceil (x / n)
 	(if (or (= (setq n (fix x)) x) (< x 0))
 		n
@@ -22,8 +23,9 @@
     ; Pick origin point
     (setq origin (getpoint "\nPick origin point: "))
 
-    ; Ask if user want to scale the drawing by 10
-    (setq does_scale (strcase (getstring "\nDo you want to scale the drawing by 10: Y/<N>")))
+    ; Ask user
+    (setq does_burst (strcase (getstring "\nDo you want to BURST: Y/<N>")))
+    (setq does_scale (strcase (getstring "\nDo you want to SCALE by 10: Y/<N>")))
 
     ; Turn off osnap
 	(setq c_osmode (getvar "osmode"))
@@ -35,14 +37,22 @@
     ; Setbylayer entire drawing
     (command "_.setbylayer" "all" "" "" "")
 
-    ; Burst all blocks (not including nested blocks due to longer time running)
-    (setq sset (ssget "X" '((0 . "INSERT"))))
-    (sssetfirst nil sset)
-    (C:Burst)
+    ; (Optional) Burst all blocks (not including nested blocks due to longer time running)
+    (if (= does_burst "Y")
+        (progn
+            (setq sset (ssget "X" '((0 . "INSERT"))))
+            (sssetfirst nil sset)
+            (C:Burst)
+        )
+    )
 
     ; Change all layers color to 252
     (setq lay_col (vla-get-layers (vla-get-activedocument (vlax-get-acad-object))))
     (vlax-for lay lay_col (vla-put-color lay 252))
+
+    ; Overkill entire drawing
+    ; https://forums.autodesk.com/t5/visual-lisp-autolisp-and-general/lisp-to-explode-close-corners-overkill-purge-and-flatten-all/m-p/8388474#M376710
+    (command "-overkill" "all" "" "Done")  ; "-overkill", not "_.overkill"
 
     ; (Optional) Scale entire drawing by factor 10 at point 0,0,0
     (if (= does_scale "Y")
