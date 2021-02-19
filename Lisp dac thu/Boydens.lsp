@@ -1,4 +1,4 @@
-; Last update: 2021/02/17
+; Last update: 2021/02/19
 
 (vl-load-com)
 
@@ -31,6 +31,9 @@
 	(setq c_osmode (getvar "osmode"))
 	(setvar "osmode" 0)
 
+    ; Audit the drawing
+    (command "_.audit" "Y" "")
+
     ; Move entire drawing from origin point to point 0,0,0
     (command "_.move" "all" "" origin '(0.0 0.0 0.0))
     
@@ -60,6 +63,9 @@
             (command "_.scale" "all" "" '(0.0 0.0 0.0) 10)
         )
     )
+
+    ; Audit the drawing
+    (command "_.audit" "Y" "")
 
     ; Restore osnap
 	(setvar "osmode" c_osmode)
