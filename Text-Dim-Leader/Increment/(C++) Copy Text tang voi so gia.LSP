@@ -1,6 +1,6 @@
 ; copy text +
 ; www.vietlisp.com
-; Modded by altsun
+; Modded by duongphamhn97@gmail.com
 ;-------------------------------------------------------------------------------
 (defun c:c++ (/ copy+ ss sslst i k k0 p1 p2 )
   
@@ -41,8 +41,8 @@
 			(setq i (1+ i))
 		)
 
-		(setq k0 1)
-		(setq k0 (getint (strcat "\nNhap so gia: <" (itoa k0) ">")))
+		(setq k0 0)
+		(setq k0 (getint (strcat "\nNhap so gia: ")))
 		(setq k k0)
 
 		(setq p1 (getpoint"\nSpecify base point or [Displacement/mOde] <Displacement>:"))
