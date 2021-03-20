@@ -26,6 +26,8 @@ CF,        *CHAMFER
 A1,        *ISOLATEOBJECTS
 A2,        *UNISOLATEOBJECTS
 A3,        *HIDEOBJECTS
+DG,        *DIMLINEAR
+DF,        *DIMALIGNED
 
 
 
