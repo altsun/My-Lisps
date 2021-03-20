@@ -1,5 +1,0 @@
-- Copy bảng thống kê trong file HDJ.ARIAL.dwg vào bản vẽ
-- Sửa font text style HDJ-Arial thành font được dùng trong Block khung bản vẽ (cụ thể trong trường hợp này là font chhbg.shx)
-- Chạy file Thong_ke.exe, chọn Block mẫu, sau đó chọn thuộc tính tên bản vẽ và số hiệu bản vẽ
-- Chèn bảng thống kê danh mục bản vẽ
-- Sửa lại tiêu đề bảng cho phù hợp

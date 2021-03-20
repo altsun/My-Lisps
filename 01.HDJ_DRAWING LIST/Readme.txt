@@ -1,0 +1,5 @@
+- Copy drawing list in file HDJ.ARIAL.dwg to your drawings
+- change font of text style HDJ-Arial to font used in title block
+- Run file Thong_ke.exe, choose titleb lock, then choose attributes of drawing name and drawing number
+- Insert the drawing list to your drawing
+- Change title of the drawing list
