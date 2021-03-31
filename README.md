@@ -1,1 +1,1 @@
-Switch to `english` branch for English names
+Switch to `english` branch for English names of lisps
