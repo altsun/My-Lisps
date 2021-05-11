@@ -1,5 +1,5 @@
 ; Created by duongphamhn97@gmail.com
-; Last update: 2021-05-10
+; Last update: 2021-05-11
 
 
 ;;;--------------------------------------------------------------------
@@ -16,11 +16,39 @@ L 0.0
 (ssdel e ss)
 )
 
-(setq s1 (entget (car (entsel "Select text to write total length"))))
+(setq s1 (entget (car (entsel "Select text to write total length\n"))))
 (setq otext (assoc 1 s1))
 (setq ot (cdr otext))
 (setq ot (read ot))
 (setq nt (cons 1 (strcat (rtos L 2 2))))
 (entmod (subst nt otext s1))
+(_SetClipBoardText (strcat (rtos L 2 2)))
+(princ "Result copied to clipboard!")
+(princ)
 )
 ;;;--------------------------------------------------------------------
+
+
+(defun _SetClipBoardText (text / htmlfile result)
+ ;;  Caller's sole responsibility is to pass a
+ ;;  text string. Anything else? Pie in face.
+ ;;  Attribution: Reformatted version of
+ ;;  post by XShrimp at theswamp.org.
+ ;;  See http://tinyurl.com/2ngf4r.
+
+ (setq	result
+ (vlax-invoke
+   (vlax-get
+     (vlax-get
+       (setq htmlfile (vlax-create-object "htmlfile"))
+       'ParentWindow
+     )
+     'ClipBoardData
+   )
+   'SetData
+   "Text"
+   text
+ )
+ )
+ (vlax-release-object htmlfile)
+)
